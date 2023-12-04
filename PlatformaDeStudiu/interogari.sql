@@ -14,12 +14,31 @@ WHERE i.ID_Student = 6;
 -- Interogare pentru calcularea notei finale a unui student dintr-un anumit curs
 SELECT AVG(Nota) FROM Note WHERE ID_Student = 9 AND ID_Disciplina = 5;
 
--- Variabilă pentru a stoca rezultatul procedurii
-SET @p_ResultCode = 0;
 
--- Apelul procedurii
-CALL Adaugare_Utilizator ('Student', '1259567800123', 'Popescu', 'Ion', 'Str. Miha Viteazu, nr. 2', '0712345178', 'popescu.on@example.com', 'RO123456789012134578901234567', 1011, @p_ResultCode);
 
--- Afișarea rezultatului
-SELECT @p_ResultCode AS ResultCode;
+
+
+-- Testare procedura pentru adaugat utilizatori
+#CALL AdaugaUtilizator('Student', '1234567899123', 'Iorga', 'Ion', 'Str. Secundara 123', '0720443456', 'iorga.ion@example.com', 'RO1234567890123316789012', 12344, 'parola133', 'yorga', NULL, NULL, NULL);
+
+SELECT * FROM Utilizatori;
+
+
+-- Testat procedura pentru adaugat note
+#CALL AdaugaNota(1, 1, 9); -- Exemplu de adăugare a unei note pentru studentul cu ID 1 la disciplina cu ID 1 și nota 9
+
+SELECT * FROM Note;
+
+
+-- Testat procedura pentru adaugat studenti
+#CALL AdaugaStudent(1, 45, '9876543910123', 'Aurelian', 'Mircea', 'Bd. Unirii 245', '0715345678', 'aur.mircea@example.com', 'RO987654321098769432109876543', 54321, 'parolamaria', 'ionescumaria', 2);
+
+SELECT * FROM Studenti;
+
+
+-- Testat procedura pentru a modifica informatiile despre un utilizator
+#CALL ModificaInformatiiUtilizator(1, 'Str. Noua 123', '0720999888', 'nou.email@example.com', 'RO1122334455667788990011');
+
+SELECT * FROM Utilizatori;
+
 

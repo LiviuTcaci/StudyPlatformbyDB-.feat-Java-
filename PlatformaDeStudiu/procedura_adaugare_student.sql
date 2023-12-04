@@ -1,40 +1,41 @@
--- Procedură pentru adăugarea unui student nou
 DELIMITER //
-CREATE PROCEDURE AdaugareStudent(
-    IN p_ID_Student INT,
-    IN p_An_Studiu INT,
-    IN p_Ore_Sustinute INT,
-    IN p_Tip_Utilizator VARCHAR(20),
-    IN p_CNP VARCHAR(13),
-    IN p_Nume VARCHAR(50),
-    IN p_Prenume VARCHAR(50),
-    IN p_Adresa VARCHAR(100),
-    IN p_Telefon VARCHAR(15),
-    IN p_Email VARCHAR(50),
-    IN p_Cont_IBAN VARCHAR(30),
-    IN p_Numar_Contract INT,
-    OUT p_ResultCode INT
+CREATE PROCEDURE AdaugaStudent(
+    IN anStudiu INT,
+    IN oreSustinute INT,
+    IN cnp VARCHAR(13),
+    IN nume VARCHAR(50),
+    IN prenume VARCHAR(50),
+    IN adresa VARCHAR(100),
+    IN telefon VARCHAR(15),
+    IN email VARCHAR(50),
+    IN contIBAN VARCHAR(30),
+    IN numarContract INT,
+    IN parola VARCHAR(15),
+    IN numeUtilizator VARCHAR(50),
+    IN idGrup INT
 )
 BEGIN
-    DECLARE userCount INT;
+    DECLARE lastUserID INT;
 
-    -- Verificare dacă CNP-ul este unic
-    SELECT COUNT(*) INTO userCount FROM Utilizatori WHERE CNP = p_CNP;
-    IF userCount > 0 THEN
-        SET p_ResultCode = -1; -- Cod de eroare pentru CNP duplicat
-        -- LEAVE Adaugare_Utilizator; -- Ieșire din procedură GIVES ERROR
+    -- Adaugă utilizator în tabela Utilizatori
+    INSERT INTO Utilizatori (Tip_Utilizator, CNP, Nume, Prenume, Adresa, Telefon, Email, Cont_IBAN, Numar_Contract)
+    VALUES ('Student', cnp, nume, prenume, adresa, telefon, email, contIBAN, numarContract);
+
+    -- Obține ID-ul utilizatorului adăugat
+    SET lastUserID = LAST_INSERT_ID();
+
+    -- Adaugă utilizator în tabela UtilizatoriAutentificare
+    INSERT INTO UtilizatoriAutentificare (ID_Utilizator, Parola, Nume_Utilizator)
+    VALUES (lastUserID, parola, numeUtilizator);
+
+    -- Adaugă student în tabela Studenti
+    INSERT INTO Studenti (ID_Student, An_Studiu, Ore_Sustinute)
+    VALUES (lastUserID, anStudiu, oreSustinute);
+
+    -- Dacă este specificat un ID de grup, adaugă studentul în grup
+    IF idGrup IS NOT NULL THEN
+        INSERT INTO Membri_Grup (ID_Grup, ID_Student)
+        VALUES (idGrup, lastUserID);
     END IF;
-
-    -- Alte verificări de validare pot fi adăugate aici...
-
-    -- Adăugare utilizator în tabel
-    INSERT INTO Utilizatori(Tip_Utilizator, CNP, Nume, Prenume, Adresa, Telefon, Email, Cont_IBAN, Numar_Contract)
-    VALUES (p_Tip_Utilizator, p_CNP, p_Nume, p_Prenume, p_Adresa, p_Telefon, p_Email, p_Cont_IBAN, p_Numar_Contract);
-
-    -- Adăugare student în tabel
-    INSERT INTO Studenti(ID_Student, An_Studiu, Ore_Sustinute)
-    VALUES (p_ID_Student, p_An_Studiu, p_Ore_Sustinute);
-
-    SET p_ResultCode = 1; -- Cod de succes
 END //
 DELIMITER ;

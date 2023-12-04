@@ -3,11 +3,11 @@ USE PDE_testing2;
 #inserarile au fost facute
 
 
-/*
+
 -- Inserări pentru tabela Utilizatori
 INSERT INTO Utilizatori (Tip_Utilizator, CNP, Nume, Prenume, Adresa, Telefon, Email, Cont_IBAN, Numar_Contract)
 VALUES 
-  ('Student', '1234567890123', 'Popescu', 'Ion', 'Str. Mihai Viteazu, nr. 1', '0712345678', 'popescu.ion@example.com', 'RO123456789012345678901234567', 1001),
+  ('Student', '1234567890123', 'Popescu', 'Ion', 'Str. Mihai Viteazu, nr. 1', '0712345698', 'popescu.ion@example.com', 'RO123456759012345678901234567', 1001),
   ('Profesor', '2345678901234', 'Ionescu', 'Maria', 'Bd. Republicii, nr. 10', '0723456789', 'ionescu.maria@example.com', 'RO987614321098765432109876543', 2001),
   ('SuperAdministrator', '3456789012345', 'Dumitrescu', 'Alex', 'Piata Unirii, nr. 5', '0734567890', 'dumitrescu.alex@example.com', 'RO567890123456789012345678901', 3001),
   ('Administrator', '4567890123456', 'Georgescu', 'Elena', 'Calea Victoriei, nr. 15', '0745678901', 'georgescu.elena@example.com', 'RO321098765432109876543210987', 4001),
@@ -234,4 +234,3 @@ VALUES
   ('10:00:00', '2023-04-10', 5),
   ('15:45:00', '2023-04-15', 7);
 
-*/

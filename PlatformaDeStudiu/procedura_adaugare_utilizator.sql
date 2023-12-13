@@ -1,38 +1,48 @@
-DROP PROCEDURE IF EXISTS Adaugare_Utilizator;
--- Procedura Adaugare_Utilizator cu tratare cazuri nevalide și coduri de stare
+use pde_testing2;
+
 DELIMITER //
-CREATE PROCEDURE Adaugare_Utilizator(
-    IN p_Tip_Utilizator VARCHAR(20),
-    IN p_CNP VARCHAR(13),
-    IN p_Nume VARCHAR(50),
-    IN p_Prenume VARCHAR(50),
-    IN p_Adresa VARCHAR(100),
-    IN p_Telefon VARCHAR(15),
-    IN p_Email VARCHAR(50),
-    IN p_Cont_IBAN VARCHAR(30),
-    IN p_Numar_Contract INT,
-    OUT p_ResultCode INT,
-    OUT p_ErrorMessage VARCHAR(255)
+CREATE PROCEDURE AdaugaUtilizator(
+    IN tipUtilizator ENUM('Student', 'Profesor', 'SuperAdministrator', 'Administrator'),
+    IN cnp VARCHAR(13),
+    IN nume VARCHAR(50),
+    IN prenume VARCHAR(50),
+    IN adresa VARCHAR(100),
+    IN telefon VARCHAR(15),
+    IN email VARCHAR(50),
+    IN contIBAN VARCHAR(30),
+    IN numarContract INT,
+    IN parola VARCHAR(15),
+    IN numeUtilizator VARCHAR(50),
+    IN departament VARCHAR(50),
+    IN oreMinim INT,
+    IN oreMaxim INT
 )
 BEGIN
-    DECLARE userCount INT;
+    DECLARE lastUserID INT;
 
-    -- Verificare dacă CNP-ul este unic
-    SELECT COUNT(*) INTO userCount FROM Utilizatori WHERE CNP = p_CNP;
-    IF userCount > 0 THEN
-        SET p_ResultCode = 0; -- Cod de eroare pentru CNP duplicat
-        SET p_ErrorMessage = 'CNP duplicat.';
+    -- Adaugă utilizator în tabela Utilizatori
+    INSERT INTO Utilizatori (Tip_Utilizator, CNP, Nume, Prenume, Adresa, Telefon, Email, Cont_IBAN, Numar_Contract)
+    VALUES (tipUtilizator, cnp, nume, prenume, adresa, telefon, email, contIBAN, numarContract);
 
-    END IF;
+    -- Obține ID-ul utilizatorului adăugat
+    SET lastUserID = LAST_INSERT_ID();
 
-    -- Verificare alte constrângeri, tipuri de date, etc...
+    -- Adaugă utilizator în tabela UtilizatoriAutentificare
+    INSERT INTO UtilizatoriAutentificare (ID_Utilizator, Parola, Nume_Utilizator)
+    VALUES (lastUserID, parola, numeUtilizator);
 
-    -- Adăugare utilizator în tabel
-    INSERT INTO Utilizatori(Tip_Utilizator, CNP, Nume, Prenume, Adresa, Telefon, Email, Cont_IBAN, Numar_Contract)
-    VALUES (p_Tip_Utilizator, p_CNP, p_Nume, p_Prenume, p_Adresa, p_Telefon, p_Email, p_Cont_IBAN, p_Numar_Contract);
-
-    SET p_ResultCode = 1; -- Cod de succes
-    SET p_ErrorMessage = ''; -- Mesaj gol pentru succes
+    -- În funcție de tipul utilizatorului, adaugă în tabela corespunzătoare
+    CASE
+        WHEN tipUtilizator = 'SuperAdministrator' THEN
+            INSERT INTO SuperAdministratori (ID_SuperAdministrator) VALUES (lastUserID);
+        WHEN tipUtilizator = 'Administrator' THEN
+            INSERT INTO Administratori (ID_Administrator) VALUES (lastUserID);
+        WHEN tipUtilizator = 'Profesor' THEN
+            INSERT INTO Profesori (ID_Profesor, Departament, Ore_Minim, Ore_Maxim) VALUES (lastUserID, departament, oreMinim, oreMaxim);
+        WHEN tipUtilizator = 'Student' THEN
+            INSERT INTO Studenti (ID_Student, An_Studiu) VALUES (lastUserID, NULL); -- Poți seta An_Studiu într-un al doilea pas, dacă este necesar
+    END CASE;
 END //
 DELIMITER ;
+
 

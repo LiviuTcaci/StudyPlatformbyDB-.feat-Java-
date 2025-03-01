@@ -1,94 +1,107 @@
-# Study Platform Management System
-
-This project is a comprehensive study management platform developed for the "Introduction to Databases" course. It features a normalized MySQL database with stored procedures, triggers, and role-based access control (RBAC), along with a JavaFX graphical interface that adapts to the roles of students, professors, administrators, and super administrators.
+# Academic Management System
+A comprehensive Java-based academic management system for educational institutions, featuring multiple user roles, course management, grade tracking, scheduling, and study group functionality.
 
 ## Overview
 
-The application allows users to:
-- **Authenticate:** Log in/out and view personal data (read-only).
-- **Manage Users:** Administrators can add, modify, and delete users.
-- **Academic Operations:** 
-  - Students can enroll in courses, view grades, and manage study group memberships.
-  - Professors can schedule activities, assign grades, and manage course rosters.
-  - Administrators can search/filter users, assign professors to courses, and manage courses and study groups.
-- **Data Integrity:**  
-  The system uses a fully normalized database schema and enforces integrity via foreign keys, stored procedures, and triggers.
+This application provides a complete solution for managing academic activities in an educational setting. It utilizes JavaFX for the user interface and MySQL for database operations, implementing role-based access control with distinct interfaces for students, professors, administrators, and super administrators.
 
-## Technologies Used
+## Features
 
-- **Java & JavaFX:** For building a role-specific GUI.
-- **MySQL & JDBC:** For managing and connecting to the relational database.
-- **SQL (Procedures & Triggers):** For business logic and ensuring data consistency.
+### Authentication
+- Secure login system with role-based access
+- User session management
 
-## Project Structure
+### Student Interface
+- View personal grades and academic performance
+- Enroll in or drop courses
+- View scheduled activities and calendar
+- Join study groups
+- Communicate with peers through group messaging
+- Register for group activities
 
-```
-StudyPlatformbyDB-.feat-Java
-├── JavaFX
-│   └── src/main/java/com/example/javafx
-│       ├── AdminInterface.java
-│       ├── DatabaseConnection.java
-│       ├── HelloController.java
-│       ├── InterfataAutentificare.java
-│       ├── Launcher.java
-│       ├── ProfesorInterface.java
-│       ├── StudentInterface.java
-│       ├── SuperAdminInterface.java
-│       ├── TestareConexiune.java
-│       └── UserInterface.java
-│   └── module-info.java
-├── PlatformaDeStudiu
-│   ├── creare_tabele.sql
-│   ├── inserari.sql
-│   ├── interogari.sql
-│   ├── procedura_adaugare_note.sql
-│   ├── procedura_adaugare_student.sql
-│   ├── procedura_adaugare_utilizator.sql
-│   ├── procedura_autentificare_utilizatori.sql
-│   ├── procedura_deautentificare_utilizatori.sql
-│   ├── procedura_modificare_info_utilizatori.sql
-│   ├── trigger_absente_studenti.sql
-│   ├── trigger_generate_log.sql
-│   ├── trigger_generate_log_nota.sql
-│   ├── trigger_inscriere_activitate.sql
-│   ├── trigger_inscriere_grup_studiu.sql
-│   ├── trigger_modificare_activitati.sql
-│   ├── trigger_nota_finala.sql
-│   ├── trigger_programare_activitati.sql
-│   ├── trigger_renuntare_curs.sql
-│   └── trigger_stergere_utilizator.sql
-├── PDEALL.sql
-├── diagrama.png
-├── inserari.sql
-├── main.sql
-├── main_final.sql
-└── roluri.sql
-```
+### Professor Interface
+- Manage courses and teaching activities
+- Record and calculate student grades
+- Schedule course activities (lectures, seminars, labs, exams)
+- View student information and performance
+- Access calendar for scheduled activities
 
-## Setup & Installation
+### Administrator Interface
+- Manage user accounts (create, modify, delete)
+- Assign professors to courses
+- View and filter user information
+- Manage course information
 
-1. **Database Setup:**
-   - Execute the SQL scripts in the `PlatformaDeStudiu` directory (or the consolidated `PDEALL.sql`) to create and populate the database.
-2. **Application Configuration:**
-   - Update the database connection details in `DatabaseConnection.java`.
-3. **Running the Application:**
-   - Open the project in your IDE (e.g., IntelliJ IDEA).
-   - Run the `Launcher.java` class to start the JavaFX application.
+### Super Administrator Interface
+- All administrator capabilities
+- Advanced system management options
+- User role management
 
-## Functionality
+### Study Groups
+- Creation and management of study groups
+- Group activity scheduling
+- Group messaging system
+- Member management
 
-- **Authentication & RBAC:**  
-  The system supports secure login and displays role-specific interfaces:
-  - **Students:** Enroll in courses, view grades, manage study group participation.
-  - **Professors:** Schedule academic activities, assign grades, view class rosters.
-  - **Administrators & Super Administrators:** Manage user records, search and filter data, assign professors to courses, and more.
-- **Academic Management:**  
-  Features include course enrollment with conflict checking, grade management with weighted averages, and comprehensive scheduling for teaching activities.
-- **Data Integrity & Automation:**  
-  The database layer utilizes stored procedures and triggers to maintain data consistency and automate business logic.
+## Technology Stack
 
-## Future Improvements
+- **Frontend**: JavaFX
+- **Backend**: Java
+- **Database**: MySQL
+- **Additional Libraries**: Apache POI (for Excel file operations)
 
-- Enhanced conflict resolution for scheduling.
-- Automated suggestions for study group memberships.
-- Further refinement of the user interface for improved usability.
+## Database Structure
+
+The system uses a relational database with tables for:
+- Users (with different types: students, professors, administrators)
+- Courses/Disciplines
+- Activities (lectures, seminars, labs, exams)
+- Schedules
+- Grades
+- Study groups
+- Messages
+- User authentication
+
+## Setup
+
+1. **Database Configuration**:
+   - Create a MySQL database
+   - Run the SQL scripts in the following order:
+     - `main_final.sql` (creates tables, stored procedures, and triggers)
+     - `inserari.sql` (adds initial data if needed)
+
+2. **Application Configuration**:
+   - Update database connection settings in `DatabaseConnection.java` with your database credentials
+   - Compile and run the application using the `Launcher.java` file
+
+3. **Dependencies**:
+   - Java JDK 11+
+   - JavaFX SDK
+   - MySQL Connector/J
+   - Apache POI
+
+## Usage
+
+1. **Login**:
+   - Enter your username and password
+   - The system automatically directs you to the appropriate interface based on your role
+
+2. **Navigation**:
+   - Each interface provides a dashboard with buttons for different functionalities
+   - All user types can view and modify personal information
+
+## System Architecture
+
+The application follows an object-oriented approach with:
+- Interface separation by user role
+- Database connection management
+- SQL stored procedures for complex operations
+- Triggers for maintaining data integrity
+
+## Contributors
+
+[List of contributors]
+
+## License
+
+[License information]
